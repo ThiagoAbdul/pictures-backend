@@ -1,0 +1,2 @@
+ALTER TABLE photo
+ALTER COLUMN created_at SET NOT NULL;
