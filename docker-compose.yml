@@ -1,0 +1,17 @@
+version: "3.1"
+
+services:
+  db:
+    container_name: postgres_pictures_app
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_DB: pictures_db
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+      PGDATA: /data/postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/data/postgres
+volumes:
+  postgres:
