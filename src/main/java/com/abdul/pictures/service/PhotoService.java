@@ -5,11 +5,11 @@ import com.abdul.pictures.exception.PhotoNonSavedException;
 import com.abdul.pictures.repository.PhotoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +17,14 @@ import java.io.IOException;
 public class PhotoService {
 
     private final PhotoRepository photoRepository;
+
+    @Transactional(readOnly = true)
+    public Page<Photo> findAll(Pageable pageable) {
+        return photoRepository.findAll(pageable);
+    }
+    public byte[] findById(Long id){
+        return photoRepository.findById(id).orElseThrow(RuntimeException::new).getContent();
+    }
 
     @Transactional
     public void postPhoto(MultipartFile file) throws PhotoNonSavedException {
@@ -28,6 +36,5 @@ public class PhotoService {
             log.info(e.getMessage());
             throw new PhotoNonSavedException(e);
         }
-
     }
 }
